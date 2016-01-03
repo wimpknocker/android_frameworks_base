@@ -219,6 +219,11 @@ android_media_AudioRecord_setup(JNIEnv *env, jobject thiz, jobject weak_this,
     paa->source = (audio_source_t) env->GetIntField(jaa, javaAudioAttrFields.fieldRecSource);
     paa->flags = (audio_flags_mask_t)env->GetIntField(jaa, javaAudioAttrFields.fieldFlags);
 
+#ifdef STE_HARDWARE
+    if (paa->source == 1999)
+	paa->source == (audio_source_t)1;
+#endif
+
     //overwrite bytesPerSample for compress VOIP use cases
     if ((paa->source == AUDIO_SOURCE_VOICE_COMMUNICATION) &&
         (format != AUDIO_FORMAT_PCM_16_BIT)) {
